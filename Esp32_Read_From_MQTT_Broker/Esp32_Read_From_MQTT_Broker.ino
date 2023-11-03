@@ -33,18 +33,25 @@ void callback(char* topic, byte* payload, unsigned int length) {
   Serial.print(topic);
   Serial.print(" Message: ");
  char receivedPayload[length + 1];  // +1 for null-terminator
+ String pReceivePayload ="";
  memset(receivedPayload, 0, sizeof(receivedPayload)); // Initialize the buffer
 
   for (int i = 0; i < length; i++) {
     receivedPayload[i] = (char)payload[i];
   }
+  String RP=(String)receivedPayload;
+  if(RP!=pReceivePayload){
+    digitalWrite(alarmPin,HIGH);
+    delay(5000);
+    digitalWrite(alarmPin,LOW);
+    pReceivePayload=RP;
+
+  }
 
   // Print the payload data
   Serial.println(receivedPayload);
 
-    digitalWrite(alarmPin,HIGH);
-    delay(5000);
-    digitalWrite(alarmPin,LOW);
+    
 
  
   
