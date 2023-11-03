@@ -32,29 +32,30 @@ class MQTTDataHandler:
         client.subscribe(self.humidity_topic)
 
     def on_message(self, client, userdata, msg):
+
         if msg.topic == self.temperature_topic:
             self.temperature = float(msg.payload)
         elif msg.topic == self.humidity_topic:
             self.humidity = int(msg.payload)
+        print(f"temperature={self.temperature} degree C")
+        print(f"Humidity={self.humidity}%")
 
     def connect_to_mqtt(self):
         self.client.connect(self.mqtt_server, self.mqtt_port, 60)
         self.client.loop_start()
     def check_condition( self):
         if not (27.00 <= self.temperature <= 24.00) or not (80 <= self.humidity <= 70):
-            self.data_publish.publish_data("true")
+            self.data_publish.publish_data(self.temperature)
 
 
     def start(self):
         self.connect_to_mqtt()
         while True:
-            print(f"temperature={self.temperature} degree C")
-            print(f"Humidity={self.humidity}%")
 
             if self.temperature is not None or self.humidity is not None:
-                handler.check_condition()
                 if self.temperature is not self.pTemp and self.humidity is not self.pHum:
                     self.data_handler.insert_data(self.temperature, self.humidity)
+                    handler.check_condition()
                     self.pTemp=self.temperature
                     self.pHum=self.humidity
 
