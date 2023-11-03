@@ -3,12 +3,13 @@ import time
 from connect_to_mysql import DataHandler
 from Write_in_MQTTServer import MQTTDataPublisher
 
-data_publish=MQTTDataPublisher()
+
 class MQTTDataHandler:
     def __init__(self, mqtt_server, mqtt_port, temperature_topic, humidity_topic):
         self.data_handler = DataHandler()
         self.data_handler.drop_table()
         self.data_handler.create_table()
+        self.data_publish=MQTTDataPublisher()
       #  self.data_write=DataPublisher()
 
 
@@ -40,8 +41,9 @@ class MQTTDataHandler:
         self.client.connect(self.mqtt_server, self.mqtt_port, 60)
         self.client.loop_start()
     def check_condition( self):
-        if not (27.00 <= self.temperature <= 24.00) or not (90 <= self.humidity <= 70):
-            data_publish.publish_data("true")
+        if not (27.00 <= self.temperature <= 24.00) or not (80 <= self.humidity <= 70):
+            self.data_publish.publish_data("true")
+
 
     def start(self):
         self.connect_to_mqtt()
@@ -55,6 +57,7 @@ class MQTTDataHandler:
                     self.data_handler.insert_data(self.temperature, self.humidity)
                     self.pTemp=self.temperature
                     self.pHum=self.humidity
+
             time.sleep(10)
 
 if __name__ == "__main__":

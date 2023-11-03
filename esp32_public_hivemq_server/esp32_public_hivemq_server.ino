@@ -1,10 +1,11 @@
+#include <DHT.h>
 #include <WiFi.h>
 #include <PubSubClient.h>
-#define Type DTH22
-#define dthpin 21
+#define Type DHT22
+#define dhtPin 21
 
-const char *SSID = "your Network address";
-const char *PWD = "Your password";
+const char *SSID = "";
+const char *PWD = "";
 
 // MQTT client
 WiFiClient wifiClient;
@@ -14,7 +15,7 @@ char *mqttServer = "broker.hivemq.com";
 int mqttPort = 1883;
 
 //Tempsensor configuration
-DHT HT(dhtPin, Type);
+DHT HT(dhtPin,Type);
 float tempC;
 int humidity;
 
@@ -68,9 +69,12 @@ void loop() {
   mqttClient.loop();
   long now = millis();
   if (now - last_time > 6000) {
-    to get the temp and humidity
-    tempC = HT.readTemperature();
-    humidity = HT.readHumidity();
+    //to get the temp and humidity
+    //tempC = HT.readTemperature();
+    //humidity = HT.readHumidity();
+
+    tempC=random(5,40);
+    humidity=random(60,90);
 
     char data[100];
     char hum[100];

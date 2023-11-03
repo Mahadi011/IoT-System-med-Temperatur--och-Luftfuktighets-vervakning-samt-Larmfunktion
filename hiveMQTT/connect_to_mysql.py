@@ -9,9 +9,9 @@ class DataHandler:
     def __init__(self):
         #Database credentials
         self.conn = mysql.connector.connect(
-            host='host name',
-            user='DB user',
-            password='DB password',
+            host='localhost',
+            user='root',
+            password='',
             database='tempareture')
         self.my_cursor = self.conn.cursor()
 

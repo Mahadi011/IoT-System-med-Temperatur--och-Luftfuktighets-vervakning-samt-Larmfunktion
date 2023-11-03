@@ -10,6 +10,7 @@ class MQTTDataPublisher:
 
     def publish_data(self, data):
         self.client.publish(self.topic, data)
+        print("publish successfully")
 
 
 
